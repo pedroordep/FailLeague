@@ -1,10 +1,100 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Cona</title>
-</head>
-<body>
-    <h1>cona</h1>
-</body>
-</html>
+<section class="im" id="top">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-10"></div>
+            <div class="col-md-2">
+                <label>Language</label>
+                <select class="form-control input-sm" ng-model="language" ng-options="language for language in languages"></select>
+            </div>
+        </div>
+        <img class="center-block" src="assets/img/loading.gif" ng-show="loading">
+        <div class="row" ng-show="championSelectedBool">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+
+                <h1 class="text-center">{{championSelected.name}}&nbsp;&nbsp;<small>{{championSelected.title}}</small></h1>
+
+                <h2>Skins</h2>
+                <div class="row">
+                    <div class="col-md-2" ng-repeat="skin in championSelected.skins">
+                        <img class="img-responsive img-thumbnail" alt="skin.name" ng-src="{{loadingImageUrl+championSelected.key+'_'+$index+'.jpg'}}">
+                        <h6 class="text text-center" style="white-space: nowrap;">{{skin.name}}</h6>
+                    </div>
+                </div>
+
+                <h2>Skills</h2>
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Cost</th>
+                        <th>Cooldown</th>
+                        <th>Range</th>
+                        <th>Description</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="info">
+                        <td><img class="img-thumbnail" ng-src="{{passiveImageUrl+championSelected.passive.image.full}}"></td>
+                        <td>{{championSelected.passive.name}}</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>{{championSelected.passive.sanitizedDescription}}</td>
+                    </tr>
+                    <tr ng-repeat="spell in championSelected.spells">
+                        <td><img class="img-thumbnail" ng-src="{{spellImageUrl+spell.image.full}}"></td>
+                        <td>{{spell.name}}</td>
+                        <td>{{spell.costBurn}}</td>
+                        <td>{{spell.cooldownBurn}}</td>
+                        <td>{{spell.rangeBurn}}</td>
+                        <td>{{spell.sanitizedDescription}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <h2>Statistics</h2>
+                <div class="row">
+                    <div class="col-md-2 text-right" ng-repeat="(name,value) in championSelected.stats">
+                        <p>{{name}}</p>
+                        <p>{{value}}</p>
+                    </div>
+                </div>
+
+                <h2>Lore</h2>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-11">
+                        <div class="text" ng-bind-html="championSelected.lore"></div>
+                    </div>
+                </div>
+
+                <h2>Tips</h2>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-11">
+                        <table class="table table-hover table-condensed">
+                            <tbody>
+                            <tr ng-repeat="tip in championSelected.allytips" class="success">
+                                <td>{{tip}}</td>
+                            </tr>
+                            <tr ng-repeat="tip in championSelected.enemytips" class="danger">
+                                <td>{{tip}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-1" ng-repeat="champion in champions">
+                <img class="img-responsive img-circle" alt="champion.key" ng-src="{{championImageUrl+champion.image.full}}" ng-click="showInfo(champion);">
+                <h6 class="text text-center" style="white-space: nowrap;">{{champion.name}}</h6>
+            </div>
+        </div>
+    </div>
+</section>

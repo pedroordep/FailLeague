@@ -1,8 +1,8 @@
-var app = angular.module('app', ['ngRoute']);
+var app = angular.module('app', ['ngRoute', 'ngSanitize']);
 
 app.config(['$routeProvider', '$locationProvider', function ($routeProvider,$locationProvider) {
     $routeProvider.when('/', {
-        templateUrl: 'FailLeague/app/champsInfo/champsInfoView.html',
+        templateUrl: 'app/champsInfo/champsInfoView.html',
         controller: 'champsInfoController'
     })
     .otherwise({

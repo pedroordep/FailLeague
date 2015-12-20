@@ -1,16 +1,16 @@
 app.factory('api', ['$http', '$q', 'key', function($http, $q, key){
-    var API_URL = "https://euw.api.pvp.net/";
+    var API_URL = "https://global.api.pvp.net/";
     var API_KEY = key.returnKey();
 
-    function apiGetRequest(url){
+    function apiGetRequest(url, parameters){
         var defer = $q.defer();
-
-        var params={'api_key':API_KEY};
+        var parameters = parameters;
+        parameters.api_key = API_KEY;
 
         $http({
             method: 'GET',
             url: API_URL + url,
-            params : params
+            params : parameters
         }).then(
             function(success){
                 defer.resolve(success);
@@ -23,18 +23,33 @@ app.factory('api', ['$http', '$q', 'key', function($http, $q, key){
     }
 
     return{
-        getChampions : function(){
+        getChampions : function(language){
             var def = $q.defer();
-            var requestUrl = "api/lol/euw/v1.2/champion";
-            apiGetRequest(requestUrl).then(
+            var requestUrl = "api/lol/static-data/euw/v1.2/champion";
+            var parameters = {champData:'all',locale:language};
+            apiGetRequest(requestUrl, parameters).then(
                 function(success){
-                    def.resolve(success);
+                    def.resolve(success.data);
                 },
                 function(failure){
                     def.reject(failure);
                 }
             );
             return def.promise;
-        }
+        }/*,
+        getLastVersion : function(){
+            var def = $q.defer();
+            var requestUrl = "api/lol/static-data/euw/v1.2/versions";
+            var parameters = {};
+            apiGetRequest(requestUrl, parameters).then(
+                function(success){
+                    def.resolve(success.data);
+                },
+                function(failure){
+                    def.reject(failure);
+                }
+            );
+            return def.promise;
+        }*/
     }
 }]);
