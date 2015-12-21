@@ -73,10 +73,34 @@ app.controller('champsInfoController', ['$scope','$location','$anchorScroll','ap
 
     $scope.showInfo = function(champion){
         $scope.championSelected = champion;
+        $scope.replaceVariablesValues();
         $scope.championSelectedBool = true;
         console.log($scope.championSelected);
         //$location.hash('top');
         $anchorScroll();
+    };
+
+    $scope.replaceVariablesValues = function(){
+        for(var i=0; i<$scope.championSelected.spells.length; i++){
+            //cost
+            var regex = new RegExp("\{\{ cost \}\}","g");
+            $scope.championSelected.spells[i].resource = $scope.championSelected.spells[i].resource.replace(regex,$scope.championSelected.spells[i].costBurn);
+            //effectBurn
+            if($scope.championSelected.spells[i].effectBurn != undefined){
+                for(var j=0; j<$scope.championSelected.spells[i].effectBurn.length; j++){
+                    var regex = new RegExp("\{\{ e"+j+" \}\}","g");
+                    $scope.championSelected.spells[i].tooltip = $scope.championSelected.spells[i].tooltip.replace(regex,$scope.championSelected.spells[i].effectBurn[j]);
+                    $scope.championSelected.spells[i].resource = $scope.championSelected.spells[i].resource.replace(regex,$scope.championSelected.spells[i].effectBurn[j]);
+                }
+            }
+            //vars
+            if($scope.championSelected.spells[i].vars != undefined){
+                for(var j=0; j<$scope.championSelected.spells[i].vars.length; j++){
+                    var regex = new RegExp("\{\{ "+$scope.championSelected.spells[i].vars[j].key+" \}\}","g");
+                    $scope.championSelected.spells[i].tooltip = $scope.championSelected.spells[i].tooltip.replace(regex,$scope.championSelected.spells[i].vars[j].coeff[0]);
+                }
+            }
+        }
     };
 
 }]);
